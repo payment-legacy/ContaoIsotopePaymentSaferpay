@@ -27,8 +27,7 @@
  * @license    LGPLv3
  */
 
-use Buzz\Browser;
-use Buzz\Client\Curl;
+use Payment\HttpClient\BuzzClient;
 use Payment\Saferpay\Saferpay;
 
 class IsotopePaymentSaferpay extends IsotopePayment
@@ -54,7 +53,8 @@ class IsotopePaymentSaferpay extends IsotopePayment
 	public function checkoutForm()
 	{
 		$strUrl = $this->getSaferpay()->initPayment($this->getSaferpay()->getKeyValuePrototype()->all(array(
-			'AMOUNT' => (round(($this->getCart()->grandTotal * 100), 0)),
+			'AMOUNT' => round($this->getCart()->grandTotal * 100, 0),
+			'CURRENCY' => $this->getConfig()->currency,
 			'ACCOUNTID' => $this->payment_saferpay_accountid,
 			'DESCRIPTION' => urlencode($this->payment_saferpay_description),
 			'ORDERID' => $this->getOrder()->id,
@@ -68,6 +68,7 @@ class IsotopePaymentSaferpay extends IsotopePayment
 			'ZIP' => $this->getBillingAddress()->postal,
 			'CITY' => $this->getBillingAddress()->city,
 			'COUNTRY' => strtoupper($this->getBillingAddress()->country),
+			'LANGID' => strtoupper($this->getBillingAddress()->country),
 			'EMAIL' => $this->getBillingAddress()->email,
 		)));
 
@@ -90,6 +91,9 @@ class IsotopePaymentSaferpay extends IsotopePayment
 		<p><a href="' . $strUrl . '">' . $GLOBALS['TL_LANG']['MSC']['pay_with_payment_saferpay'][2]. '</a></p>';
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function processPayment()
 	{
 		if($this->getSaferpay()->confirmPayment($_GET['DATA'], $this->Input->get('SIGNATURE')) != '')
@@ -136,7 +140,7 @@ class IsotopePaymentSaferpay extends IsotopePayment
 			$this->objSaferpay->getConfig()->getCompleteDefaultsConfig()->all($arrConfig['defaults']['complete']);
 
 			// set httpclient
-			$this->objSaferpay->setHttpClient(new Browser(new Curl()));
+			$this->objSaferpay->setHttpClient(new BuzzClient());
 
 			// read from session
 			$this->getSaferpay()->setData($this->getSession()->get($this->strSessionKey));
@@ -166,6 +170,14 @@ class IsotopePaymentSaferpay extends IsotopePayment
 	protected function getCart()
 	{
 		return $this->getIsotope()->Cart;
+	}
+
+	/**
+	 * @return IsotopeConfig
+	 */
+	protected function getConfig()
+	{
+		return $this->getIsotope()->Config;
 	}
 
 	/**
