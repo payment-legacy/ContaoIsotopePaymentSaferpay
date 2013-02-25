@@ -13,8 +13,8 @@
     "require": {
         "php": ">=5.3.4",
         "contao": "2.11.*",
-	"payment/saferpay": "dev-master",
-	"payment/httpclient-buzz": "dev-master"
+	"payment/saferpay": "1.0.*",
+	"payment/httpclient-buzz": "1.0.*"
     },
     "autoload": {
         "classmap": ["src/"]
