@@ -82,13 +82,8 @@ class IsotopePaymentSaferpay extends IsotopePayment
 			$this->redirect($this->addToUrl('step=failed', true));
 		}
 
-		// html redirect
-		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="0; URL=' . $strUrl . '">';
-
-		// for those, the redirect doesn't work
-		return '<h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_payment_saferpay'][0] . '</h2>
-		<p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_payment_saferpay'][1] . '</p>
-		<p><a href="' . $strUrl . '">' . $GLOBALS['TL_LANG']['MSC']['pay_with_payment_saferpay'][2]. '</a></p>';
+		// redirect to saferpay
+		$this->redirect($strUrl);
 	}
 
 	/**
