@@ -29,6 +29,7 @@
 
 use Payment\HttpClient\BuzzClient;
 use Payment\Saferpay\Saferpay;
+use Payment\Saferpay\Data\PayInitParameter;
 
 class IsotopePaymentSaferpay extends IsotopePayment
 {
@@ -36,11 +37,6 @@ class IsotopePaymentSaferpay extends IsotopePayment
 	 * @var Saferpay
 	 */
 	protected $objSaferpay;
-
-	/**
-	 * @var string
-	 */
-	protected $strSessionKey = 'payment.saferpay.data';
 
 	/**
 	 * @var IsotopeOrder
@@ -52,28 +48,28 @@ class IsotopePaymentSaferpay extends IsotopePayment
 	 */
 	public function checkoutForm()
 	{
-		$strUrl = $this->getSaferpay()->initPayment($this->getSaferpay()->getKeyValuePrototype()->all(array(
-			'AMOUNT' => round($this->getCart()->grandTotal * 100, 0),
-			'CURRENCY' => $this->getConfig()->currency,
-			'ACCOUNTID' => $this->payment_saferpay_accountid,
-			'DESCRIPTION' => urlencode($this->payment_saferpay_description),
-			'ORDERID' => $this->getOrder()->id,
-			'SUCCESSLINK' => $this->Environment->base . $this->addToUrl('step=complete', true),
-			'FAILLINK' => $this->Environment->base . $this->addToUrl('step=failed', true),
-			'BACKLINK' => $this->Environment->base . $this->addToUrl('step=failed', true),
-			'GENDER' => $this->getGender(),
-			'FIRSTNAME' => $this->getBillingAddress()->firstname,
-			'LASTNAME' => $this->getBillingAddress()->lastname,
-			'STREET' => $this->getBillingAddress()->street_1,
-			'ZIP' => $this->getBillingAddress()->postal,
-			'CITY' => $this->getBillingAddress()->city,
-			'COUNTRY' => strtoupper($this->getBillingAddress()->country),
-			'LANGID' => strtoupper($this->getBillingAddress()->country),
-			'EMAIL' => $this->getBillingAddress()->email,
-		)));
+		$objPayInitParameter = new PayInitParameter();
+		$objPayInitParameter
+			->setAmount(round($this->getCart()->grandTotal * 100, 0))
+			->setCurrency($this->getConfig()->currency)
+			->setAccountid($this->payment_saferpay_accountid)
+			->setDescription(urlencode($this->payment_saferpay_description))
+			->setOrderid($this->getOrder()->id)
+			->setSuccesslink($this->Environment->base . $this->addToUrl('step=complete', true))
+			->setFaillink($this->Environment->base . $this->addToUrl('step=failed', true))
+			->setBacklink($this->Environment->base . $this->addToUrl('step=failed', true))
+			->setGender($this->getGender())
+			->setFirstname($this->getBillingAddress()->firstname)
+			->setLastname($this->getBillingAddress()->lastname)
+			->setStreet($this->getBillingAddress()->street_1)
+			->setZip($this->getBillingAddress()->postal)
+			->setCity($this->getBillingAddress()->city)
+			->setCountry(strtoupper($this->getBillingAddress()->country))
+			->setLangid(strtoupper($this->getBillingAddress()->country))
+			->setEmail($this->getBillingAddress()->email)
+		;
 
-		// write to session
-		$this->getSession()->set($this->strSessionKey, $this->getSaferpay()->getData());
+		$strUrl = $this->getSaferpay()->createPayInit($objPayInitParameter);
 
 		// if something went wrong
 		if(!$strUrl)
@@ -91,19 +87,17 @@ class IsotopePaymentSaferpay extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		if($this->getSaferpay()->confirmPayment($_GET['DATA'], $this->Input->get('SIGNATURE')) != '')
-		{
-			if($this->getSaferpay()->completePayment() != '')
-			{
-				$this->getOrder()->date_paid = time();
-				$this->getOrder()->save();
-				$this->getSession()->set($this->strSessionKey, null);
-				return true;
-			}
+		$payConfirmParameter = $this->getSaferpay()->verifyPayConfirm($_GET['DATA'], $this->Input->get('SIGNATURE'));
+		if($payConfirmParameter->getAmount() == round($this->getCart()->grandTotal * 100, 0) &&
+		   $payConfirmParameter->getCurrency() == $this->getConfig()->currency) {
+			$this->getSaferpay()->payCompleteV2($payConfirmParameter, 'Settlement');
+			$this->getOrder()->date_paid = time();
+			$this->getOrder()->save();
+		} else {
+			$this->getSaferpay()->payCompleteV2($payConfirmParameter, 'Cancel');
+			$this->log('Payment not successfull', 'PaymentSaferpay processPayment()', TL_ERROR);
+			$this->redirect($this->addToUrl('step=failed', true));
 		}
-
-		$this->log('Payment not successfull', 'PaymentSaferpay processPayment()', TL_ERROR);
-		$this->redirect($this->addToUrl('step=failed', true));
 	}
 
 	/**
@@ -116,39 +110,11 @@ class IsotopePaymentSaferpay extends IsotopePayment
 			// initialize saferpay
 			$this->objSaferpay = new Saferpay();
 
-			// get config as an array
-			$arrConfig = $this->objSaferpay->getSaferpayConfig();
-
-			// update config
-			$this->objSaferpay->getConfig()->setInitUrl($arrConfig['urls']['init']);
-			$this->objSaferpay->getConfig()->setConfirmUrl($arrConfig['urls']['confirm']);
-			$this->objSaferpay->getConfig()->setCompleteUrl($arrConfig['urls']['complete']);
-
-			// set validation config
-			$this->objSaferpay->getConfig()->getInitValidationsConfig()->all($arrConfig['validators']['init']);
-			$this->objSaferpay->getConfig()->getConfirmValidationsConfig()->all($arrConfig['validators']['confirm']);
-			$this->objSaferpay->getConfig()->getCompleteValidationsConfig()->all($arrConfig['validators']['complete']);
-
-			// set default config
-			$this->objSaferpay->getConfig()->getInitDefaultsConfig()->all($arrConfig['defaults']['init']);
-			$this->objSaferpay->getConfig()->getConfirmDefaultsConfig()->all($arrConfig['defaults']['confirm']);
-			$this->objSaferpay->getConfig()->getCompleteDefaultsConfig()->all($arrConfig['defaults']['complete']);
-
 			// set httpclient
 			$this->objSaferpay->setHttpClient(new BuzzClient());
-
-			// read from session
-			$this->getSaferpay()->setData($this->getSession()->get($this->strSessionKey));
 		}
-		return $this->objSaferpay;
-	}
 
-	/**
-	 * @return Session
-	 */
-	protected function getSession()
-	{
-		return Session::getInstance();
+		return $this->objSaferpay;
 	}
 
 	/**
