@@ -93,6 +93,7 @@ class IsotopePaymentSaferpay extends IsotopePayment
 			$this->getSaferpay()->payCompleteV2($payConfirmParameter, 'Settlement');
 			$this->getOrder()->date_paid = time();
 			$this->getOrder()->save();
+			return true;
 		} else {
 			$this->getSaferpay()->payCompleteV2($payConfirmParameter, 'Cancel');
 			$this->log('Payment not successfull', 'PaymentSaferpay processPayment()', TL_ERROR);
