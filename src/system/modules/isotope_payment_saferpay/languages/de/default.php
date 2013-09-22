@@ -27,6 +27,8 @@
  * @license    LGPLv3
  */
 
+use Payment\Saferpay\Data\Billpay\BillpayPayInitParameterInterface;
+
 /**
  * Payment modules
  */
@@ -35,8 +37,12 @@ $GLOBALS['ISO_LANG']['PAY']['payment_saferpay'] = array('Saferpay (payment/safer
 /**
  * Miscellaneous
  */
-$GLOBALS['TL_LANG']['MSC']['pay_with_saferpay']	= array(
+$GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'] = array(
 	'Bezahlen mit Saferpay (payment/saferpay)',
 	'Sie werden nun an Saferpay zur bezahlung Ihrere Bestellung weitergeleitet. Wenn Sie nicht sofort weitergeleitet werden, klicken Sie bitte auf "Jetzt bezahlen".',
 	'Jetzt bezahlen'
 );
+
+$GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::LEGALFORM_GMBH] = 'GmbH';
+$GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::LEGALFORM_AG] = 'AG';
+$GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::LEGALFORM_MISC] = 'andere Firmenform';

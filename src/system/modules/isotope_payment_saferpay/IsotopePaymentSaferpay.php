@@ -22,14 +22,22 @@
  *
  * PHP version 5
  * @copyright  IMS Internet Marketing Solutions Ltd. 2013
- * @author     Dominik Zogg <dz@erfolgreiche-internetseiten.ch>
- * @package    isotope_payment_saferpay
- * @license    LGPLv3
+ * @author	 Dominik Zogg <dz@erfolgreiche-internetseiten.ch>
+ * @package	isotope_payment_saferpay
+ * @license	LGPLv3
  */
 
 use Payment\HttpClient\BuzzClient;
 use Payment\Saferpay\Saferpay;
 use Payment\Saferpay\Data\PayInitParameter;
+use Payment\Saferpay\Data\PayConfirmParameter;
+use Payment\Saferpay\Data\PayCompleteParameter;
+use Payment\Saferpay\Data\PayCompleteResponse;
+use Payment\Saferpay\Data\Collection\Collection;
+use Payment\Saferpay\Data\Billpay\BillpayPayInitParameter;
+use Payment\Saferpay\Data\Billpay\BillpayPayConfirmParameter;
+use Payment\Saferpay\Data\Billpay\BillpayPayCompleteParameter;
+use Payment\Saferpay\Data\Billpay\BillpayPayCompleteResponse;
 
 class IsotopePaymentSaferpay extends IsotopePayment
 {
@@ -48,8 +56,10 @@ class IsotopePaymentSaferpay extends IsotopePayment
 	 */
 	public function checkoutForm()
 	{
-		$objPayInitParameter = new PayInitParameter();
-		$objPayInitParameter
+		$objPayInitParameter = new Collection;
+
+		$objBasePayInitParameter = new PayInitParameter;
+		$objBasePayInitParameter
 			->setAmount(round($this->getCart()->grandTotal * 100, 0))
 			->setCurrency($this->getConfig()->currency)
 			->setAccountid($this->payment_saferpay_accountid)
@@ -58,7 +68,7 @@ class IsotopePaymentSaferpay extends IsotopePayment
 			->setSuccesslink($this->Environment->base . $this->addToUrl('step=complete', true))
 			->setFaillink($this->Environment->base . $this->addToUrl('step=failed', true))
 			->setBacklink($this->Environment->base . $this->addToUrl('step=failed', true))
-			->setGender($this->getGender())
+			->setGender($this->getGender($this->getBillingAddress()->salutation))
 			->setFirstname($this->getBillingAddress()->firstname)
 			->setLastname($this->getBillingAddress()->lastname)
 			->setStreet($this->getBillingAddress()->street_1)
@@ -66,8 +76,29 @@ class IsotopePaymentSaferpay extends IsotopePayment
 			->setCity($this->getBillingAddress()->city)
 			->setCountry(strtoupper($this->getBillingAddress()->country))
 			->setLangid(strtoupper($this->getBillingAddress()->country))
+			->setPhone($this->getBillingAddress()->phone)
 			->setEmail($this->getBillingAddress()->email)
 		;
+		$objPayInitParameter->addCollectionItem($objBasePayInitParameter);
+
+		if($this->payment_saferpay_billpay)
+		{
+			$objBillpayPayInitParameter = new BillpayPayInitParameter;
+			$objBillpayPayInitParameter
+				->setLegalform($this->payment_saferpay_billpay_legalform)
+				->setAddressAddition($this->getBillingAddress()->street_2)
+				->setDeliveryGender($this->getGender($this->getDeliveryAddress()->salutation))
+				->setDeliveryFirstname($this->getDeliveryAddress()->firstname)
+				->setDeliveryLastname($this->getDeliveryAddress()->lastname)
+				->setDeliveryStreet($this->getDeliveryAddress()->street_1)
+				->setDeliveryAddressAddition($this->getDeliveryAddress()->street_2)
+				->setDeliveryZip($this->getDeliveryAddress()->postal)
+				->setDeliveryCity($this->getDeliveryAddress()->city)
+				->setDeliveryCountry($this->getDeliveryAddress()->country)
+				->setDeliveryPhone($this->getDeliveryAddress()->phone)
+			;
+			$objPayInitParameter->addCollectionItem($objBillpayPayInitParameter);
+		}
 
 		$strUrl = $this->getSaferpay()->createPayInit($objPayInitParameter);
 
@@ -87,15 +118,55 @@ class IsotopePaymentSaferpay extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		$payConfirmParameter = $this->getSaferpay()->verifyPayConfirm($_GET['DATA'], $this->Input->get('SIGNATURE'));
-		if($payConfirmParameter->getAmount() == round($this->getCart()->grandTotal * 100, 0) &&
-		   $payConfirmParameter->getCurrency() == $this->getConfig()->currency) {
-			$this->getSaferpay()->payCompleteV2($payConfirmParameter, 'Settlement');
+		$objPayConfirmParameter = new Collection;
+		$objPayConfirmParameter->addCollectionItem(new PayConfirmParameter);
+		if($this->payment_saferpay_billpay)
+		{
+			$objPayConfirmParameter->addCollectionItem(new BillpayPayConfirmParameter);
+		}
+
+		$payConfirmParameter = $this->getSaferpay()->verifyPayConfirm(
+			$_REQUEST['DATA'],
+			$this->Input->get('SIGNATURE'),
+			$objPayConfirmParameter
+		);
+
+		$objPayCompleteParameter = new Collection;
+		$objPayCompleteParameter->addCollectionItem(new PayCompleteParameter);
+		if($this->payment_saferpay_billpay)
+		{
+			$objPayCompleteParameter->addCollectionItem(new BillpayPayCompleteParameter);
+		}
+
+		$objPayCompleteResponse = new Collection;
+		$objPayCompleteResponse->addCollectionItem(new PayCompleteResponse);
+		if($this->payment_saferpay_billpay)
+		{
+			$objPayCompleteResponse->addCollectionItem(new BillpayPayCompleteResponse);
+		}
+
+		if($payConfirmParameter->get('AMOUNT') == round($this->getCart()->grandTotal * 100, 0) &&
+		   $payConfirmParameter->get('CURRENCY') == $this->getConfig()->currency)
+		{
+			$this->getSaferpay()->payCompleteV2(
+				$payConfirmParameter,
+				'Settlement',
+				$this->payment_saferpay_password,
+				$objPayCompleteParameter,
+				$objPayCompleteResponse
+			);
+
 			$this->getOrder()->date_paid = time();
 			$this->getOrder()->save();
 			return true;
 		} else {
-			$this->getSaferpay()->payCompleteV2($payConfirmParameter, 'Cancel');
+			$this->getSaferpay()->payCompleteV2(
+				$payConfirmParameter,
+				'Cancel',
+				$this->payment_saferpay_password,
+				$objPayCompleteParameter,
+				$objPayCompleteResponse
+			);
 			$this->log('Payment not successfull', 'PaymentSaferpay processPayment()', TL_ERROR);
 			$this->redirect($this->addToUrl('step=failed', true));
 		}
@@ -168,11 +239,20 @@ class IsotopePaymentSaferpay extends IsotopePayment
 	}
 
 	/**
+	 * @return IsotopeAddressModel
+	 */
+	protected function getDeliveryAddress()
+	{
+		return $this->getCart()->deliveryAddress;
+	}
+
+	/**
+	 * @param $salutation
 	 * @return string
 	 */
-	protected function getGender()
+	protected function getGender($salutation)
 	{
-		switch ($this->getBillingAddress()->salutation) {
+		switch ($salutation) {
 			case 'Herr':
 			case 'Mr':
 			case 'Mr.':
