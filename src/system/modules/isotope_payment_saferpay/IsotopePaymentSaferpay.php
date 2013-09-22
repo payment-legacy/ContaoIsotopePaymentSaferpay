@@ -87,15 +87,15 @@ class IsotopePaymentSaferpay extends IsotopePayment
 			$objBillpayPayInitParameter
 				->setLegalform($this->payment_saferpay_billpay_legalform)
 				->setAddressAddition($this->getBillingAddress()->street_2)
-				->setDeliveryGender($this->getGender($this->getDeliveryAddress()->salutation))
-				->setDeliveryFirstname($this->getDeliveryAddress()->firstname)
-				->setDeliveryLastname($this->getDeliveryAddress()->lastname)
-				->setDeliveryStreet($this->getDeliveryAddress()->street_1)
-				->setDeliveryAddressAddition($this->getDeliveryAddress()->street_2)
-				->setDeliveryZip($this->getDeliveryAddress()->postal)
-				->setDeliveryCity($this->getDeliveryAddress()->city)
-				->setDeliveryCountry($this->getDeliveryAddress()->country)
-				->setDeliveryPhone($this->getDeliveryAddress()->phone)
+				->setDeliveryGender($this->getGender($this->getShippingAdress()->salutation))
+				->setDeliveryFirstname($this->getShippingAdress()->firstname)
+				->setDeliveryLastname($this->getShippingAdress()->lastname)
+				->setDeliveryStreet($this->getShippingAdress()->street_1)
+				->setDeliveryAddressAddition($this->getShippingAdress()->street_2)
+				->setDeliveryZip($this->getShippingAdress()->postal)
+				->setDeliveryCity($this->getShippingAdress()->city)
+				->setDeliveryCountry($this->getShippingAdress()->country)
+				->setDeliveryPhone($this->getShippingAdress()->phone)
 			;
 			$objPayInitParameter->addCollectionItem($objBillpayPayInitParameter);
 		}
@@ -241,9 +241,9 @@ class IsotopePaymentSaferpay extends IsotopePayment
 	/**
 	 * @return IsotopeAddressModel
 	 */
-	protected function getDeliveryAddress()
+	protected function getShippingAdress()
 	{
-		return $this->getCart()->deliveryAddress;
+		return $this->getCart()->shippingAddress;
 	}
 
 	/**
