@@ -243,7 +243,12 @@ class IsotopePaymentSaferpay extends IsotopePayment
 	 */
 	protected function getShippingAdress()
 	{
-		return $this->getCart()->shippingAddress;
+		$shippingAddress = $this->getCart()->shippingAddress;
+		if($shippingAddress->id != -1)
+		{
+			return $shippingAddress;
+		}
+		return $this->getBillingAddress();
 	}
 
 	/**
