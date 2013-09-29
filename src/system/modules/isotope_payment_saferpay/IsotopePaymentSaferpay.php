@@ -131,6 +131,15 @@ class IsotopePaymentSaferpay extends IsotopePayment
 			$objPayConfirmParameter
 		);
 
+		if($this->payment_saferpay_billpay)
+		{
+			$this->getOrder()->pob_accountholder = $payConfirmParameter->get('POB_ACCOUNTHOLDER');
+			$this->getOrder()->pob_accountnumber = $payConfirmParameter->get('POB_ACCOUNTNUMBER');
+			$this->getOrder()->pob_bankcode = $payConfirmParameter->get('POB_BANKCODE');
+			$this->getOrder()->pob_bankname = $payConfirmParameter->get('POB_BANKNAME');
+			$this->getOrder()->pob_payernote = $payConfirmParameter->get('POB_PAYERNOTE');
+		}
+
 		$objPayCompleteParameter = new Collection;
 		$objPayCompleteParameter->addCollectionItem(new PayCompleteParameter);
 		if($this->payment_saferpay_billpay)
@@ -155,6 +164,11 @@ class IsotopePaymentSaferpay extends IsotopePayment
 				$objPayCompleteParameter,
 				$objPayCompleteResponse
 			);
+
+			if($this->payment_saferpay_billpay)
+			{
+				$this->getOrder()->pob_duedate = $payConfirmParameter->get('POB_DUEDATE');
+			}
 
 			$this->getOrder()->date_paid = time();
 			$this->getOrder()->save();
