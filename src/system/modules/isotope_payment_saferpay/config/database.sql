@@ -18,3 +18,17 @@ CREATE TABLE `tl_iso_payment_modules` (
   `payment_saferpay_billpay` char(1) NOT NULL default '',
   `payment_saferpay_billpay_legalform` varchar(4) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+--
+-- Table `tl_iso_orders`
+--
+
+CREATE TABLE `tl_iso_orders` (
+  `pob_accountholder` varchar(50) NOT NULL default '',
+  `pob_accountnumber` varchar(10) NOT NULL default '',
+  `pob_bankcode` varchar(8) NOT NULL default '',
+  `pob_bankname` varchar(50) NOT NULL default '',
+  `pob_payernote` varchar(80) NOT NULL default '',
+  `pob_duedate` varchar(8) NOT NULL default ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
