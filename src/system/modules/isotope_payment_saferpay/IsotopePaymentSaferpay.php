@@ -167,7 +167,7 @@ class IsotopePaymentSaferpay extends IsotopePayment
 
 			if($this->payment_saferpay_billpay)
 			{
-				$this->getOrder()->pob_duedate = $payConfirmParameter->get('POB_DUEDATE');
+				$this->getOrder()->pob_duedate = $objPayCompleteResponse->get('POB_DUEDATE');
 			}
 
 			$this->getOrder()->date_paid = time();
