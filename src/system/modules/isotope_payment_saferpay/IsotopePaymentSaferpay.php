@@ -86,12 +86,12 @@ class IsotopePaymentSaferpay extends IsotopePayment
 			$objBillpayPayInitParameter = new BillpayPayInitParameter;
 			$objBillpayPayInitParameter
 				->setLegalform($this->payment_saferpay_billpay_legalform)
-				->setAddressAddition($this->getBillingAddress()->street_2)
+				->setAddressAddition(!is_null($this->getBillingAddress()->street_2) ? $this->getBillingAddress()->street_2 : '')
 				->setDeliveryGender($this->getGender($this->getShippingAdress()->salutation))
 				->setDeliveryFirstname($this->getShippingAdress()->firstname)
 				->setDeliveryLastname($this->getShippingAdress()->lastname)
 				->setDeliveryStreet($this->getShippingAdress()->street_1)
-				->setDeliveryAddressAddition($this->getShippingAdress()->street_2)
+				->setDeliveryAddressAddition(!is_null($this->getShippingAdress()->street_2) ? $this->getShippingAdress()->street_2 : '')
 				->setDeliveryZip($this->getShippingAdress()->postal)
 				->setDeliveryCity($this->getShippingAdress()->city)
 				->setDeliveryCountry($this->getShippingAdress()->country)
