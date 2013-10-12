@@ -36,3 +36,8 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_description']			
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_paymentmethods']			= array('Saferpay Zahlungart', 'Übergeben Sie Saferpay, welche Zahlungsarten sie nutzen wollen. Wählen Sie nur jene, welche in ihrem Saferpaykonto freigeschaltet sind.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_billpay']					= array('Saferpay Billpay Integration', 'Hier können Sie die Billpay Integration aktivieren.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_paymentmethods_billpay']	= array('Saferpay Billpay Zahlungart', 'Übergeben Sie Saferpay, welche Zahlungsarten (Billpay) sie nutzen wollen. Wählen Sie nur jene, welche in ihrem Saferpaykonto freigeschaltet sind.');
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['billpay_legend'] = 'Billpay';
