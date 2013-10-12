@@ -59,13 +59,6 @@ class IsotopePaymentSaferpay extends IsotopePayment
 	{
 		$objPayInitParameter = new Collection;
 
-		$arrPaymentMethods = unserialize($this->payment_saferpay_paymentmethods);
-
-		if($this->payment_saferpay_billpay)
-		{
-			$arrPaymentMethods = array_merge($arrPaymentMethods, unserialize($this->payment_saferpay_paymentmethods_billpay));
-		}
-
 		$objBasePayInitParameter = new PayInitParameter;
 		$objBasePayInitParameter
 			->setAmount(round($this->getCart()->grandTotal * 100, 0))
@@ -76,7 +69,7 @@ class IsotopePaymentSaferpay extends IsotopePayment
 			->setSuccesslink($this->Environment->base . $this->addToUrl('step=complete', true))
 			->setFaillink($this->Environment->base . $this->addToUrl('step=failed', true))
 			->setBacklink($this->Environment->base . $this->addToUrl('step=failed', true))
-			->setPaymentmethods($arrPaymentMethods)
+			->setPaymentmethods(unserialize($this->payment_saferpay_paymentmethods))
 			->setGender($this->getGender($this->getBillingAddress()->salutation))
 			->setFirstname($this->getBillingAddress()->firstname)
 			->setLastname($this->getBillingAddress()->lastname)
@@ -88,6 +81,19 @@ class IsotopePaymentSaferpay extends IsotopePayment
 			->setPhone($this->getBillingAddress()->phone)
 			->setEmail($this->getBillingAddress()->email)
 		;
+
+		$arrProviderSet = array();
+
+		if($this->payment_saferpay_billpay)
+		{
+			$arrProviderSet = array_merge($arrProviderSet, unserialize($this->payment_saferpay_providerset_billpay));
+		}
+
+		if(count($arrProviderSet))
+		{
+			$objBasePayInitParameter->setProviderset($arrProviderSet);
+		}
+
 		$objPayInitParameter->addCollectionItem($objBasePayInitParameter);
 
 		if($this->payment_saferpay_billpay)

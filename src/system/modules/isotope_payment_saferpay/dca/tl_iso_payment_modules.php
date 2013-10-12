@@ -102,14 +102,14 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_billpay
 	'eval'			=> array('submitOnChange'=>true, 'class' => 'clr long')
 );
 
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_paymentmethods_billpay'] = array
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_providerset_billpay'] = array
 (
-    'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_paymentmethods_billpay'],
+    'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_providerset_billpay'],
     'inputType'		=> 'checkbox',
     'options'		=> array
     (
-        BillpayPayInitParameterInterface::PAYMENTMETHOD_BILLPAY_LSV,
-        BillpayPayInitParameterInterface::PAYMENTMETHOD_BILLPAY_INVOICE,
+        BillpayPayInitParameterInterface::PROVIDERSET_BILLPAY_LSV,
+        BillpayPayInitParameterInterface::PROVIDERSET_BILLPAY_INVOICE,
     ),
     'reference'		=> &$GLOBALS['TL_LANG']['MSC'],
     'eval'			=> array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50')
