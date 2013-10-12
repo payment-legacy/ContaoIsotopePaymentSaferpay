@@ -65,5 +65,6 @@ $GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_IDEAL] = 'iD
 $GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_CLICK_N_BUY] = 'Click\'n\'Buy';
 $GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_HOMEBANKING_AT] = 'Homebanking Austria';
 $GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_MPASS] = 'mpass';
-$GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::PAYMENTMETHOD_BILLPAY_LSV] = 'Billpay Lastschrift';
-$GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::PAYMENTMETHOD_BILLPAY_INVOICE] = 'Billpay Rechnung';
+
+$GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::PROVIDERSET_BILLPAY_LSV] = 'Billpay Lastschrift';
+$GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::PROVIDERSET_BILLPAY_INVOICE] = 'Billpay Rechnung';
