@@ -92,7 +92,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_payment
 		BillpayPayInitParameterInterface::PAYMENTMETHOD_BILLPAY_INVOICE,
 	),
 	'reference'		=> &$GLOBALS['TL_LANG']['MSC'],
-	'eval'			=> array('multiple' => true, 'tl_class'=>'w50')
+	'eval'			=> array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50')
 );
 
 $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_billpay'] = array
@@ -101,5 +101,5 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_billpay
 	'exclude'		=> true,
 	'filter'		=> true,
 	'inputType'		=> 'checkbox',
-	'eval'			=> array('submitOnChange'=>true, 'class' => 'clr')
+	'eval'			=> array('submitOnChange'=>true, 'class' => 'clr long')
 );
