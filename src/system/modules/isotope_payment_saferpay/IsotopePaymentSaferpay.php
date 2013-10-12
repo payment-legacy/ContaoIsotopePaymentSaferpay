@@ -56,6 +56,8 @@ class IsotopePaymentSaferpay extends IsotopePayment
 	 */
 	public function checkoutForm()
 	{
+		$arrPaymentMethods = unserialize($this->payment_saferpay_paymentmethods);
+
 		$objPayInitParameter = new Collection;
 
 		$objBasePayInitParameter = new PayInitParameter;
@@ -68,6 +70,7 @@ class IsotopePaymentSaferpay extends IsotopePayment
 			->setSuccesslink($this->Environment->base . $this->addToUrl('step=complete', true))
 			->setFaillink($this->Environment->base . $this->addToUrl('step=failed', true))
 			->setBacklink($this->Environment->base . $this->addToUrl('step=failed', true))
+			->setPaymentmethods($arrPaymentMethods)
 			->setGender($this->getGender($this->getBillingAddress()->salutation))
 			->setFirstname($this->getBillingAddress()->firstname)
 			->setLastname($this->getBillingAddress()->lastname)

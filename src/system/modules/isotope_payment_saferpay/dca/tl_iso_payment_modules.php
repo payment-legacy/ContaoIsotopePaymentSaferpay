@@ -27,6 +27,7 @@
  * @license	LGPLv3
  */
 
+use Payment\Saferpay\Data\PayInitParameterInterface;
 use Payment\Saferpay\Data\Billpay\BillpayPayInitParameterInterface;
 
 /**
@@ -60,6 +61,40 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_descrip
 	'eval'			=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr long'),
 );
 
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_paymentmethods'] = array
+(
+	'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_paymentmethods'],
+	'inputType'		=> 'checkbox',
+	'options'		=> array
+	(
+		PayInitParameterInterface::PAYMENTMETHOD_MASTERCARD,
+		PayInitParameterInterface::PAYMENTMETHOD_VISA,
+		PayInitParameterInterface::PAYMENTMETHOD_AMERICAN_EXPRESS,
+		PayInitParameterInterface::PAYMENTMETHOD_DINERSCLUB,
+		PayInitParameterInterface::PAYMENTMETHOD_JCB,
+		PayInitParameterInterface::PAYMENTMETHOD_SAFERPAY_TESTCARD,
+		PayInitParameterInterface::PAYMENTMETHOD_LASER_CARD,
+		PayInitParameterInterface::PAYMENTMETHOD_BONUS_CARD,
+		PayInitParameterInterface::PAYMENTMETHOD_POSTFINANCE_E_FINANCE,
+		PayInitParameterInterface::PAYMENTMETHOD_POSTFINANCE_CARD,
+		PayInitParameterInterface::PAYMENTMETHOD_MAESTRO_INTERNATIONAL,
+		PayInitParameterInterface::PAYMENTMETHOD_MYONE,
+		PayInitParameterInterface::PAYMENTMETHOD_DIRECTDEBIT,
+		PayInitParameterInterface::PAYMENTMETHOD_INVOICE,
+		PayInitParameterInterface::PAYMENTMETHOD_IMMEDIATE_TRANSFER,
+		PayInitParameterInterface::PAYMENTMETHOD_PAYPAL,
+		PayInitParameterInterface::PAYMENTMETHOD_GIROPAY,
+		PayInitParameterInterface::PAYMENTMETHOD_IDEAL,
+		PayInitParameterInterface::PAYMENTMETHOD_CLICK_N_BUY,
+		PayInitParameterInterface::PAYMENTMETHOD_HOMEBANKING_AT,
+		PayInitParameterInterface::PAYMENTMETHOD_MPASS,
+		BillpayPayInitParameterInterface::PAYMENTMETHOD_BILLPAY_LSV,
+		BillpayPayInitParameterInterface::PAYMENTMETHOD_BILLPAY_INVOICE,
+	),
+	'reference'		=> &$GLOBALS['TL_LANG']['MSC'],
+	'eval'			=> array('multiple' => true, 'tl_class'=>'w50')
+);
+
 $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_billpay'] = array
 (
 	'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_billpay'],
@@ -75,7 +110,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_billpay
 	'default'		=> BillpayPayInitParameterInterface::LEGALFORM_GMBH,
 	'exclude'		=> true,
 	'inputType'		=> 'select',
-	'options'		=> array(
+	'options'		=> array
+    (
 		BillpayPayInitParameterInterface::LEGALFORM_GMBH,
 		BillpayPayInitParameterInterface::LEGALFORM_AG,
 		BillpayPayInitParameterInterface::LEGALFORM_MISC

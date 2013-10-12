@@ -27,6 +27,7 @@
  * @license    LGPLv3
  */
 
+use Payment\Saferpay\Data\PayInitParameterInterface;
 use Payment\Saferpay\Data\Billpay\BillpayPayInitParameterInterface;
 
 /**
@@ -42,6 +43,30 @@ $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'] = array(
 	'Sie werden nun an Saferpay zur bezahlung Ihrere Bestellung weitergeleitet. Wenn Sie nicht sofort weitergeleitet werden, klicken Sie bitte auf "Jetzt bezahlen".',
 	'Jetzt bezahlen'
 );
+
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_MASTERCARD] = 'MasterCard';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_VISA] = 'Visa';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_AMERICAN_EXPRESS] = 'American Express';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_DINERSCLUB] = 'Dinersclub';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_JCB] = 'JCB Kreditkarte';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_SAFERPAY_TESTCARD] = 'Saferpay Testkarte';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_LASER_CARD] = 'Laser Card';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_BONUS_CARD] = 'BONUS CARD';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_POSTFINANCE_E_FINANCE] = 'PostFinance E-Banking';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_POSTFINANCE_CARD] = 'PostFinance Karte';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_MAESTRO_INTERNATIONAL] = 'Maestro karte';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_MYONE] = 'myOne';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_DIRECTDEBIT] = 'Lastschrift';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_INVOICE] = 'Rechnung';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_IMMEDIATE_TRANSFER] = 'Sofortüberweisung';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_PAYPAL] = 'Paypal';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_GIROPAY] = 'Giropay';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_IDEAL] = 'iDEAL';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_CLICK_N_BUY] = 'Click\'n\'Buy';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_HOMEBANKING_AT] = 'Homebanking Austria';
+$GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_MPASS] = 'mpass';
+$GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::PAYMENTMETHOD_BILLPAY_LSV] = 'Billpay Lastschrift';
+$GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::PAYMENTMETHOD_BILLPAY_INVOICE] = 'Billpay Rechnung';
 
 $GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::LEGALFORM_GMBH] = 'GmbH';
 $GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::LEGALFORM_AG] = 'AG';
