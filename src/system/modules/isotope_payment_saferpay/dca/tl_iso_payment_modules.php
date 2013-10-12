@@ -101,5 +101,5 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_billpay
 	'exclude'		=> true,
 	'filter'		=> true,
 	'inputType'		=> 'checkbox',
-	'eval'			=> array('submitOnChange'=>true)
+	'eval'			=> array('submitOnChange'=>true, 'class' => 'clr')
 );
