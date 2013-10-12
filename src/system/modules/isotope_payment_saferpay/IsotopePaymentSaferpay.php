@@ -34,6 +34,7 @@ use Payment\Saferpay\Data\PayConfirmParameter;
 use Payment\Saferpay\Data\PayCompleteParameter;
 use Payment\Saferpay\Data\PayCompleteResponse;
 use Payment\Saferpay\Data\Collection\Collection;
+use Payment\Saferpay\Data\Billpay\BillpayPayInitParameterInterface;
 use Payment\Saferpay\Data\Billpay\BillpayPayInitParameter;
 use Payment\Saferpay\Data\Billpay\BillpayPayConfirmParameter;
 use Payment\Saferpay\Data\Billpay\BillpayPayCompleteParameter;
@@ -87,8 +88,13 @@ class IsotopePaymentSaferpay extends IsotopePayment
 		if($this->payment_saferpay_billpay)
 		{
 			$objBillpayPayInitParameter = new BillpayPayInitParameter;
+
+			if($this->getGender($this->getBillingAddress()->salutation) == 'c')
+			{
+				$objBillpayPayInitParameter->setLegalform(BillpayPayInitParameterInterface::LEGALFORM_MISC);
+			}
+
 			$objBillpayPayInitParameter
-				->setLegalform($this->payment_saferpay_billpay_legalform)
 				->setAddressAddition(!is_null($this->getBillingAddress()->street_2) ? $this->getBillingAddress()->street_2 : '')
 				->setDeliveryGender($this->getGender($this->getShippingAdress()->salutation))
 				->setDeliveryFirstname($this->getShippingAdress()->firstname)

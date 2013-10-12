@@ -30,6 +30,8 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_accountid']		= array('Saferpay Account-ID', 'Bitte geben Sie Ihre eindeutige Saferpay Account-ID ein.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_password']		= array('Saferpay Password', 'Bitte geben Sie Ihr Saferpay Passwort ein. Ohne ist es nicht möglich fehlgeschlagene Zahlungen, korrekt abzubrechen.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_description']	= array('Saferpay Bestell-Beschreibung', 'Diese Beschreibung wird dem Kunden im Saferpay-Bestellprozess angezeigt.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_accountid']			= array('Saferpay Account-ID', 'Bitte geben Sie Ihre eindeutige Saferpay Account-ID ein.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_password']			= array('Saferpay Password', 'Bitte geben Sie Ihr Saferpay Passwort ein. Ohne ist es nicht möglich fehlgeschlagene Zahlungen, korrekt abzubrechen.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_description']		= array('Saferpay Bestell-Beschreibung', 'Diese Beschreibung wird dem Kunden im Saferpay-Bestellprozess angezeigt.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_paymentmethods']	= array('Saferpay Zahlungart', 'Übergeben Sie Saferpay, welche Zahlungsarten sie nutzen wollen. Wählen Sie nur jene, welche in ihrem Saferpaykonto freigeschaltet sind.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_billpay']			= array('Saferpay Billpay Integration', 'Hier können Sie die Billpay Integration aktivieren.');

@@ -35,7 +35,7 @@ use Payment\Saferpay\Data\Billpay\BillpayPayInitParameterInterface;
  */
 $GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['__selector__'][] = 'payment_saferpay_billpay';
 $GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['payment_saferpay'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payment_saferpay_accountid,payment_saferpay_password,payment_saferpay_description,payment_saferpay_paymentmethods,payment_saferpay_billpay;{price_legend:hide},price,tax_class;{enabled_legend},enabled';
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['subpalettes']['payment_saferpay_billpay'] = 'payment_saferpay_billpay_legalform';
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['subpalettes']['payment_saferpay_billpay'] = '';
 
 /**
  * Fields
@@ -102,20 +102,4 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_billpay
 	'filter'		=> true,
 	'inputType'		=> 'checkbox',
 	'eval'			=> array('submitOnChange'=>true)
-);
-
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_billpay_legalform'] = array
-(
-	'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_billpay_legalform'],
-	'default'		=> BillpayPayInitParameterInterface::LEGALFORM_GMBH,
-	'exclude'		=> true,
-	'inputType'		=> 'select',
-	'options'		=> array
-    (
-		BillpayPayInitParameterInterface::LEGALFORM_GMBH,
-		BillpayPayInitParameterInterface::LEGALFORM_AG,
-		BillpayPayInitParameterInterface::LEGALFORM_MISC
-	),
-	'reference'		=> &$GLOBALS['TL_LANG']['MSC'],
-	'eval'			=> array('tl_class'=>'w50')
 );

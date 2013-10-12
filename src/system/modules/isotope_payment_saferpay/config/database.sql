@@ -16,8 +16,7 @@ CREATE TABLE `tl_iso_payment_modules` (
   `payment_saferpay_password` varchar(16) NOT NULL default '',
   `payment_saferpay_description` varchar(255) NOT NULL default '',
   `payment_saferpay_paymentmethods` blob NULL,
-  `payment_saferpay_billpay` char(1) NOT NULL default '',
-  `payment_saferpay_billpay_legalform` varchar(4) NOT NULL default '',
+  `payment_saferpay_billpay` char(1) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

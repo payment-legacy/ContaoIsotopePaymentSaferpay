@@ -67,7 +67,3 @@ $GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_HOMEBANKING_
 $GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_MPASS] = 'mpass';
 $GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::PAYMENTMETHOD_BILLPAY_LSV] = 'Billpay Lastschrift';
 $GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::PAYMENTMETHOD_BILLPAY_INVOICE] = 'Billpay Rechnung';
-
-$GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::LEGALFORM_GMBH] = 'GmbH';
-$GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::LEGALFORM_AG] = 'AG';
-$GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::LEGALFORM_MISC] = 'andere Firmenform';
