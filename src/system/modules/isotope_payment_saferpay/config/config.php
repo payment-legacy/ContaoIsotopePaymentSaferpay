@@ -31,3 +31,4 @@
  * Payment modules
  */
 $GLOBALS['ISO_PAY']['payment_saferpay'] = 'IsotopePaymentSaferpay';
+$GLOBALS['ISO_PAY']['payment_saferpay_billpay'] = 'IsotopePaymentSaferpayBillpay';

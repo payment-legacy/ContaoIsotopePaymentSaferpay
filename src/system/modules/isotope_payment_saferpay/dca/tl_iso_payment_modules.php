@@ -33,9 +33,8 @@ use Payment\Saferpay\Data\Billpay\BillpayPayInitParameterInterface;
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['__selector__'][] = 'payment_saferpay_billpay';
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['payment_saferpay'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payment_saferpay_accountid,payment_saferpay_password,payment_saferpay_description,payment_saferpay_paymentmethods;{billpay_legend},payment_saferpay_billpay;{price_legend:hide},price,tax_class;{enabled_legend},enabled';
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['subpalettes']['payment_saferpay_billpay'] = 'payment_saferpay_providerset_billpay';
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['payment_saferpay'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payment_saferpay_accountid,payment_saferpay_password,payment_saferpay_description,payment_saferpay_paymentmethods;{price_legend:hide},price,tax_class;{enabled_legend},enabled';
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['payment_saferpay_billpay'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payment_saferpay_accountid,payment_saferpay_password,payment_saferpay_description,payment_saferpay_providerset_billpay;{price_legend:hide},price,tax_class;{enabled_legend},enabled';
 
 /**
  * Fields
@@ -93,24 +92,15 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_payment
 	'eval'			=> array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50')
 );
 
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_billpay'] = array
-(
-	'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_billpay'],
-	'exclude'		=> true,
-	'filter'		=> true,
-	'inputType'		=> 'checkbox',
-	'eval'			=> array('submitOnChange'=>true, 'class' => 'clr long')
-);
-
 $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_providerset_billpay'] = array
 (
-    'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_providerset_billpay'],
-    'inputType'		=> 'checkbox',
-    'options'		=> array
-    (
-        BillpayPayInitParameterInterface::PROVIDERSET_BILLPAY_LSV,
-        BillpayPayInitParameterInterface::PROVIDERSET_BILLPAY_INVOICE,
-    ),
-    'reference'		=> &$GLOBALS['TL_LANG']['MSC'],
-    'eval'			=> array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50')
+	'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_providerset_billpay'],
+	'inputType'		=> 'checkbox',
+	'options'		=> array
+	(
+		BillpayPayInitParameterInterface::PROVIDERSET_BILLPAY_LSV,
+		BillpayPayInitParameterInterface::PROVIDERSET_BILLPAY_INVOICE,
+	),
+	'reference'		=> &$GLOBALS['TL_LANG']['MSC'],
+	'eval'			=> array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50')
 );

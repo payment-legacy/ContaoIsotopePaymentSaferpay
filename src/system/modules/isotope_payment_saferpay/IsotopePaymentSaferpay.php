@@ -27,40 +27,17 @@
  * @license	LGPLv3
  */
 
-use Payment\HttpClient\BuzzClient;
-use Payment\Saferpay\Saferpay;
 use Payment\Saferpay\Data\PayInitParameter;
-use Payment\Saferpay\Data\PayConfirmParameter;
-use Payment\Saferpay\Data\PayCompleteParameter;
-use Payment\Saferpay\Data\PayCompleteResponse;
-use Payment\Saferpay\Data\Collection\Collection;
-use Payment\Saferpay\Data\Billpay\BillpayPayInitParameterInterface;
-use Payment\Saferpay\Data\Billpay\BillpayPayInitParameter;
-use Payment\Saferpay\Data\Billpay\BillpayPayConfirmParameter;
-use Payment\Saferpay\Data\Billpay\BillpayPayCompleteParameter;
-use Payment\Saferpay\Data\Billpay\BillpayPayCompleteResponse;
 
-class IsotopePaymentSaferpay extends IsotopePayment
+class IsotopePaymentSaferpay extends AbstractIsotopePaymentSaferpay
 {
-	/**
-	 * @var Saferpay
-	 */
-	protected $objSaferpay;
-
-	/**
-	 * @var IsotopeOrder
-	 */
-	protected $objOrder;
-
 	/**
 	 * @return string
 	 */
 	public function checkoutForm()
 	{
-		$objPayInitParameter = new Collection;
-
-		$objBasePayInitParameter = new PayInitParameter;
-		$objBasePayInitParameter
+		$objPayInitParameter = new PayInitParameter;
+        $objPayInitParameter
 			->setAmount(round($this->getCart()->grandTotal * 100, 0))
 			->setCurrency($this->getConfig()->currency)
 			->setAccountid($this->payment_saferpay_accountid)
@@ -82,54 +59,14 @@ class IsotopePaymentSaferpay extends IsotopePayment
 			->setEmail($this->getBillingAddress()->email)
 		;
 
-		$arrProviderSet = array();
-
-		if($this->payment_saferpay_billpay)
-		{
-			$arrProviderSet = array_merge($arrProviderSet, unserialize($this->payment_saferpay_providerset_billpay));
-		}
-
-		if(count($arrProviderSet))
-		{
-			$objBasePayInitParameter->setProviderset($arrProviderSet);
-		}
-
-		$objPayInitParameter->addCollectionItem($objBasePayInitParameter);
-
-		if($this->payment_saferpay_billpay)
-		{
-			$objBillpayPayInitParameter = new BillpayPayInitParameter;
-
-			if($this->getGender($this->getBillingAddress()->salutation) == 'c')
-			{
-				$objBillpayPayInitParameter->setLegalform(BillpayPayInitParameterInterface::LEGALFORM_MISC);
-			}
-
-			$objBillpayPayInitParameter
-				->setAddressAddition(!is_null($this->getBillingAddress()->street_2) ? $this->getBillingAddress()->street_2 : '')
-				->setDeliveryGender($this->getGender($this->getShippingAdress()->salutation))
-				->setDeliveryFirstname($this->getShippingAdress()->firstname)
-				->setDeliveryLastname($this->getShippingAdress()->lastname)
-				->setDeliveryStreet($this->getShippingAdress()->street_1)
-				->setDeliveryAddressAddition(!is_null($this->getShippingAdress()->street_2) ? $this->getShippingAdress()->street_2 : '')
-				->setDeliveryZip($this->getShippingAdress()->postal)
-				->setDeliveryCity($this->getShippingAdress()->city)
-				->setDeliveryCountry($this->getShippingAdress()->country)
-				->setDeliveryPhone($this->getShippingAdress()->phone)
-			;
-			$objPayInitParameter->addCollectionItem($objBillpayPayInitParameter);
-		}
-
 		$strUrl = $this->getSaferpay()->createPayInit($objPayInitParameter);
 
-		// if something went wrong
 		if(!$strUrl)
 		{
 			$this->log('Payment not successfull', 'PaymentSaferpay checkoutForm()', TL_ERROR);
 			$this->redirect($this->addToUrl('step=failed', true));
 		}
 
-		// redirect to saferpay
 		$this->redirect($strUrl);
 	}
 
@@ -138,170 +75,17 @@ class IsotopePaymentSaferpay extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		$objPayConfirmParameter = new Collection;
-		$objPayConfirmParameter->addCollectionItem(new PayConfirmParameter);
-		if($this->payment_saferpay_billpay)
-		{
-			$objPayConfirmParameter->addCollectionItem(new BillpayPayConfirmParameter);
-		}
-
-		$payConfirmParameter = $this->getSaferpay()->verifyPayConfirm(
-			$_REQUEST['DATA'],
-			$this->Input->get('SIGNATURE'),
-			$objPayConfirmParameter
-		);
-
-		if($this->payment_saferpay_billpay)
-		{
-			$this->getOrder()->pob_accountholder = $payConfirmParameter->get('POB_ACCOUNTHOLDER');
-			$this->getOrder()->pob_accountnumber = $payConfirmParameter->get('POB_ACCOUNTNUMBER');
-			$this->getOrder()->pob_bankcode = $payConfirmParameter->get('POB_BANKCODE');
-			$this->getOrder()->pob_bankname = $payConfirmParameter->get('POB_BANKNAME');
-			$this->getOrder()->pob_payernote = $payConfirmParameter->get('POB_PAYERNOTE');
-		}
-
-		$objPayCompleteParameter = new Collection;
-		$objPayCompleteParameter->addCollectionItem(new PayCompleteParameter);
-		if($this->payment_saferpay_billpay)
-		{
-			$objPayCompleteParameter->addCollectionItem(new BillpayPayCompleteParameter);
-		}
-
-		$objPayCompleteResponse = new Collection;
-		$objPayCompleteResponse->addCollectionItem(new PayCompleteResponse);
-		if($this->payment_saferpay_billpay)
-		{
-			$objPayCompleteResponse->addCollectionItem(new BillpayPayCompleteResponse);
-		}
-
+		$payConfirmParameter = $this->getSaferpay()->verifyPayConfirm($_GET['DATA'], $this->Input->get('SIGNATURE'));
 		if($payConfirmParameter->get('AMOUNT') == round($this->getCart()->grandTotal * 100, 0) &&
-		   $payConfirmParameter->get('CURRENCY') == $this->getConfig()->currency)
-		{
-			$this->getSaferpay()->payCompleteV2(
-				$payConfirmParameter,
-				'Settlement',
-				$this->payment_saferpay_password,
-				$objPayCompleteParameter,
-				$objPayCompleteResponse
-			);
-
-			if($this->payment_saferpay_billpay)
-			{
-				$this->getOrder()->pob_duedate = $objPayCompleteResponse->get('POB_DUEDATE');
-			}
-
+		   $payConfirmParameter->get('CURRENCY') == $this->getConfig()->currency) {
+			$this->getSaferpay()->payCompleteV2($payConfirmParameter, 'Settlement', $this->payment_saferpay_password);
 			$this->getOrder()->date_paid = time();
 			$this->getOrder()->save();
 			return true;
 		} else {
-			$this->getSaferpay()->payCompleteV2(
-				$payConfirmParameter,
-				'Cancel',
-				$this->payment_saferpay_password,
-				$objPayCompleteParameter,
-				$objPayCompleteResponse
-			);
+			$this->getSaferpay()->payCompleteV2($payConfirmParameter, 'Cancel', $this->payment_saferpay_password);
 			$this->log('Payment not successfull', 'PaymentSaferpay processPayment()', TL_ERROR);
 			$this->redirect($this->addToUrl('step=failed', true));
-		}
-	}
-
-	/**
-	 * @return Saferpay
-	 */
-	protected function getSaferpay()
-	{
-		if(is_null($this->objSaferpay))
-		{
-			// initialize saferpay
-			$this->objSaferpay = new Saferpay();
-
-			// set httpclient
-			$this->objSaferpay->setHttpClient(new BuzzClient());
-		}
-
-		return $this->objSaferpay;
-	}
-
-	/**
-	 * @return Isotope
-	 */
-	protected function getIsotope()
-	{
-		return $this->Isotope;
-	}
-
-	/**
-	 * @return IsotopeCart
-	 */
-	protected function getCart()
-	{
-		return $this->getIsotope()->Cart;
-	}
-
-	/**
-	 * @return IsotopeConfig
-	 */
-	protected function getConfig()
-	{
-		return $this->getIsotope()->Config;
-	}
-
-	/**
-	 * @return IsotopeOrder
-	 */
-	protected function getOrder()
-	{
-		if(is_null($this->objOrder))
-		{
-			$this->objOrder = new IsotopeOrder();
-			if(!$this->objOrder->findBy('cart_id', $this->getCart()->id))
-			{
-				// if there is no order in this cart something went definitly wrong
-				$this->redirect($this->addToUrl('step=failed', true));
-			}
-		}
-		return $this->objOrder;
-	}
-
-	/**
-	 * @return IsotopeAddressModel
-	 */
-	protected function getBillingAddress()
-	{
-		return $this->getCart()->billingAddress;
-	}
-
-	/**
-	 * @return IsotopeAddressModel
-	 */
-	protected function getShippingAdress()
-	{
-		$shippingAddress = $this->getCart()->shippingAddress;
-		if($shippingAddress->id != -1)
-		{
-			return $shippingAddress;
-		}
-		return $this->getBillingAddress();
-	}
-
-	/**
-	 * @param $salutation
-	 * @return string
-	 */
-	protected function getGender($salutation)
-	{
-		switch ($salutation) {
-			case 'Herr':
-			case 'Mr':
-			case 'Mr.':
-				return 'm';
-			case 'Frau':
-			case 'Mrs':
-			case 'Mrs.':
-				return 'f';
-			default:
-				return '';
 		}
 	}
 }

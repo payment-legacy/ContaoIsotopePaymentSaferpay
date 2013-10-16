@@ -34,6 +34,7 @@ use Payment\Saferpay\Data\Billpay\BillpayPayInitParameterInterface;
  * Payment modules
  */
 $GLOBALS['ISO_LANG']['PAY']['payment_saferpay'] = array('Saferpay (payment/saferpay)', '');
+$GLOBALS['ISO_LANG']['PAY']['payment_saferpay_billpay'] = array('Billpay Integration Saferpay (payment/saferpay)', '');
 
 /**
  * Miscellaneous

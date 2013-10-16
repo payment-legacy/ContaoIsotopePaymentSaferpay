@@ -31,3 +31,4 @@
  * Extension folder
  */
 $GLOBALS['TL_LANG']['MOD']['isotope_payment_saferpay']	= array('Isotope eCommerce: Saferpay Zahlungsmodul (payment/saferpay)');
+$GLOBALS['TL_LANG']['MOD']['isotope_payment_saferpay_billpay']	= array('Isotope eCommerce: Billpay Integration Saferpay Zahlungsmodul (payment/saferpay)');
