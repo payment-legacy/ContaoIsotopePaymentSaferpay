@@ -82,7 +82,7 @@ class IsotopePaymentSaferpayBillpay extends AbstractIsotopePaymentSaferpay
 			->setDeliveryAddressAddition(!is_null($this->getShippingAdress()->street_2) ? $this->getShippingAdress()->street_2 : '')
 			->setDeliveryZip($this->getShippingAdress()->postal)
 			->setDeliveryCity($this->getShippingAdress()->city)
-			->setDeliveryCountry($this->getShippingAdress()->country)
+			->setDeliveryCountry(strtoupper($this->getShippingAdress()->country))
 			->setDeliveryPhone($this->getShippingAdress()->phone)
 		;
 
