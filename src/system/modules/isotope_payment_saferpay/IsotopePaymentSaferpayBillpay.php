@@ -113,17 +113,17 @@ class IsotopePaymentSaferpayBillpay extends AbstractIsotopePaymentSaferpay
 		$objPayConfirmParameter->addCollectionItem(new PayConfirmParameter);
 		$objPayConfirmParameter->addCollectionItem(new BillpayPayConfirmParameter);
 
-		$payConfirmParameter = $this->getSaferpay()->verifyPayConfirm(
+		$objPayConfirmParameter = $this->getSaferpay()->verifyPayConfirm(
 			$_REQUEST['DATA'],
 			$this->Input->get('SIGNATURE'),
 			$objPayConfirmParameter
 		);
 
-		$this->getOrder()->pob_accountholder = $payConfirmParameter->get('POB_ACCOUNTHOLDER');
-		$this->getOrder()->pob_accountnumber = $payConfirmParameter->get('POB_ACCOUNTNUMBER');
-		$this->getOrder()->pob_bankcode = $payConfirmParameter->get('POB_BANKCODE');
-		$this->getOrder()->pob_bankname = $payConfirmParameter->get('POB_BANKNAME');
-		$this->getOrder()->pob_payernote = $payConfirmParameter->get('POB_PAYERNOTE');
+		$this->getOrder()->pob_accountholder = $objPayConfirmParameter->get('POB_ACCOUNTHOLDER');
+		$this->getOrder()->pob_accountnumber = $objPayConfirmParameter->get('POB_ACCOUNTNUMBER');
+		$this->getOrder()->pob_bankcode = $objPayConfirmParameter->get('POB_BANKCODE');
+		$this->getOrder()->pob_bankname = $objPayConfirmParameter->get('POB_BANKNAME');
+		$this->getOrder()->pob_payernote = $objPayConfirmParameter->get('POB_PAYERNOTE');
 
 		$objPayCompleteParameter = new Collection;
 		$objPayCompleteParameter->addCollectionItem(new PayCompleteParameter);
@@ -133,24 +133,23 @@ class IsotopePaymentSaferpayBillpay extends AbstractIsotopePaymentSaferpay
 		$objPayCompleteResponse->addCollectionItem(new PayCompleteResponse);
 		$objPayCompleteResponse->addCollectionItem(new BillpayPayCompleteResponse);
 
-		if($payConfirmParameter->get('AMOUNT') == round($this->getCart()->grandTotal * 100, 0) &&
-			$payConfirmParameter->get('CURRENCY') == $this->getConfig()->currency)
+		if($objPayConfirmParameter->get('AMOUNT') == round($this->getCart()->grandTotal * 100, 0) &&
+		   $objPayConfirmParameter->get('CURRENCY') == $this->getConfig()->currency)
 		{
 			$this->getSaferpay()->payCompleteV2(
-				$payConfirmParameter,
+				$objPayConfirmParameter,
 				'Settlement',
 				$this->payment_saferpay_password,
 				$objPayCompleteParameter,
 				$objPayCompleteResponse
 			);
 
-			$this->getOrder()->date_paid = time();
 			$this->getOrder()->pob_duedate = $objPayCompleteResponse->get('POB_DUEDATE');
 			$this->getOrder()->save();
 			return true;
 		} else {
 			$this->getSaferpay()->payCompleteV2(
-				$payConfirmParameter,
+				 $objPayConfirmParameter,
 				'Cancel',
 				$this->payment_saferpay_password,
 				$objPayCompleteParameter,
