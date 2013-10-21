@@ -16,9 +16,6 @@
         "payment/saferpay": "dev-master",
         "payment/httpclient-buzz": "1.1.*"
     },
-    "autoload": {
-        "classmap": ["src/"]
-    },
     "extra": {
         "contao": {
             "symlinks": {
