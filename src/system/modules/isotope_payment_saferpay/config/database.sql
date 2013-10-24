@@ -26,8 +26,8 @@ CREATE TABLE `tl_iso_payment_modules` (
 
 CREATE TABLE `tl_iso_orders` (
   `pob_accountholder` varchar(50) NOT NULL default '',
-  `pob_accountnumber` varchar(10) NOT NULL default '',
-  `pob_bankcode` varchar(8) NOT NULL default '',
+  `pob_accountnumber` varchar(50) NOT NULL default '',
+  `pob_bankcode` varchar(50) NOT NULL default '',
   `pob_bankname` varchar(50) NOT NULL default '',
   `pob_payernote` varchar(80) NOT NULL default '',
   `pob_duedate` varchar(8) NOT NULL default ''
