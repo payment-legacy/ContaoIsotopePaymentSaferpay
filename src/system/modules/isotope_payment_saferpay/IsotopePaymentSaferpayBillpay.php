@@ -45,10 +45,8 @@ class IsotopePaymentSaferpayBillpay extends AbstractIsotopePaymentSaferpay
 	 */
 	public function checkoutForm()
 	{
-		$objPayInitParameter = new Collection;
-
-		$objBasePayInitParameter = new PayInitParameter;
-		$objBasePayInitParameter
+		$objPayInitParameter = new PayInitParameter;
+		$objPayInitParameter
 			->setAmount(round($this->getCart()->grandTotal * 100, 0))
 			->setCurrency($this->getConfig()->currency)
 			->setAccountid($this->payment_saferpay_accountid)
@@ -70,8 +68,6 @@ class IsotopePaymentSaferpayBillpay extends AbstractIsotopePaymentSaferpay
 			->setEmail($this->getBillingAddress()->email)
 		;
 
-		$objPayInitParameter->addCollectionItem($objBasePayInitParameter);
-
 		$objBillpayPayInitParameter = new BillpayPayInitParameter;
 		$objBillpayPayInitParameter
 			->setAddressAddition(!is_null($this->getBillingAddress()->street_2) ? $this->getBillingAddress()->street_2 : '')
@@ -91,9 +87,11 @@ class IsotopePaymentSaferpayBillpay extends AbstractIsotopePaymentSaferpay
 			$objBillpayPayInitParameter->setLegalform(BillpayPayInitParameterInterface::LEGALFORM_MISC);
 		}
 
-		$objPayInitParameter->addCollectionItem($objBillpayPayInitParameter);
+		$objPayInitParameterCollection = new Collection($objPayInitParameter->getRequestUrl());
+		$objPayInitParameterCollection->addCollectionItem($objPayInitParameter);
+		$objPayInitParameterCollection->addCollectionItem($objBillpayPayInitParameter);
 
-		$strUrl = $this->getSaferpay()->createPayInit($objPayInitParameter);
+		$strUrl = $this->getSaferpay()->createPayInit($objPayInitParameterCollection);
 
 		if(!$strUrl)
 		{
@@ -109,50 +107,60 @@ class IsotopePaymentSaferpayBillpay extends AbstractIsotopePaymentSaferpay
 	 */
 	public function processPayment()
 	{
-		$objPayConfirmParameter = new Collection;
-		$objPayConfirmParameter->addCollectionItem(new PayConfirmParameter);
-		$objPayConfirmParameter->addCollectionItem(new BillpayPayConfirmParameter);
 
-		$objPayConfirmParameter = $this->getSaferpay()->verifyPayConfirm(
+		$objPayConfirmParameter = new PayConfirmParameter;
+		$objBillpayPayConfirmParameter = new BillpayPayConfirmParameter;
+
+		$objPayConfirmParameterCollection = new Collection($objPayConfirmParameter->getRequestUrl());
+		$objPayConfirmParameterCollection->addCollectionItem($objPayConfirmParameter);
+		$objPayConfirmParameterCollection->addCollectionItem($objBillpayPayConfirmParameter);
+
+		$objPayConfirmParameterCollection = $this->getSaferpay()->verifyPayConfirm(
 			$_REQUEST['DATA'],
 			$this->Input->get('SIGNATURE'),
-			$objPayConfirmParameter
+			$objPayConfirmParameterCollection
 		);
 
-		$objPayCompleteParameter = new Collection;
-		$objPayCompleteParameter->addCollectionItem(new PayCompleteParameter);
-		$objPayCompleteParameter->addCollectionItem(new BillpayPayCompleteParameter);
+		$objPayCompleteParameter = new PayCompleteParameter;
+		$objBillpayPayCompleteParameter = new BillpayPayCompleteParameter;
 
-		$objPayCompleteResponse = new Collection;
-		$objPayCompleteResponse->addCollectionItem(new PayCompleteResponse);
-		$objPayCompleteResponse->addCollectionItem(new BillpayPayCompleteResponse);
+		$objPayCompleteParameterCollection = new Collection($objPayCompleteParameter->getRequestUrl());
+		$objPayCompleteParameterCollection->addCollectionItem($objPayCompleteParameter);
+		$objPayCompleteParameterCollection->addCollectionItem($objBillpayPayCompleteParameter);
 
-		if($objPayConfirmParameter->get('AMOUNT') == round($this->getCart()->grandTotal * 100, 0) &&
-		   $objPayConfirmParameter->get('CURRENCY') == $this->getConfig()->currency)
+		$objPayCompleteResponse = new PayCompleteResponse;
+		$objBillpayPayCompleteResponse = new BillpayPayCompleteResponse;
+
+		$objPayCompleteResponseCollection = new Collection($objPayCompleteResponse->getRequestUrl());
+		$objPayCompleteResponseCollection->addCollectionItem($objPayCompleteResponse);
+		$objPayCompleteResponseCollection->addCollectionItem($objBillpayPayCompleteResponse);
+
+		if($objPayConfirmParameterCollection->get('AMOUNT') == round($this->getCart()->grandTotal * 100, 0) &&
+		   $objPayConfirmParameterCollection->get('CURRENCY') == $this->getConfig()->currency)
 		{
 			$this->getSaferpay()->payCompleteV2(
-				$objPayConfirmParameter,
+				$objPayConfirmParameterCollection,
 				'Settlement',
 				$this->payment_saferpay_password,
-				$objPayCompleteParameter,
-				$objPayCompleteResponse
+				$objPayCompleteParameterCollection,
+				$objPayCompleteResponseCollection
 			);
 
-			$this->getOrder()->pob_duedate = $objPayCompleteResponse->get('POB_DUEDATE');
-			$this->getOrder()->pob_accountholder = $objPayCompleteResponse->get('POB_ACCOUNTHOLDER');
-			$this->getOrder()->pob_accountnumber = $objPayCompleteResponse->get('POB_ACCOUNTNUMBER');
-			$this->getOrder()->pob_bankcode = $objPayCompleteResponse->get('POB_BANKCODE');
-			$this->getOrder()->pob_bankname = $objPayCompleteResponse->get('POB_BANKNAME');
-			$this->getOrder()->pob_payernote = $objPayCompleteResponse->get('POB_PAYERNOTE');
+			$this->getOrder()->pob_duedate = $objPayCompleteResponseCollection->get('POB_DUEDATE');
+			$this->getOrder()->pob_accountholder = $objPayCompleteResponseCollection->get('POB_ACCOUNTHOLDER');
+			$this->getOrder()->pob_accountnumber = $objPayCompleteResponseCollection->get('POB_ACCOUNTNUMBER');
+			$this->getOrder()->pob_bankcode = $objPayCompleteResponseCollection->get('POB_BANKCODE');
+			$this->getOrder()->pob_bankname = $objPayCompleteResponseCollection->get('POB_BANKNAME');
+			$this->getOrder()->pob_payernote = $objPayCompleteResponseCollection->get('POB_PAYERNOTE');
 			$this->getOrder()->save();
 			return true;
 		} else {
 			$this->getSaferpay()->payCompleteV2(
-				 $objPayConfirmParameter,
+				 $objPayConfirmParameterCollection,
 				'Cancel',
 				$this->payment_saferpay_password,
-				$objPayCompleteParameter,
-				$objPayCompleteResponse
+				$objPayCompleteParameterCollection,
+				$objPayCompleteResponseCollection
 			);
 			$this->log('Payment not successfull', 'PaymentSaferpay processPayment()', TL_ERROR);
 			$this->redirect($this->addToUrl('step=failed', true));
