@@ -119,12 +119,6 @@ class IsotopePaymentSaferpayBillpay extends AbstractIsotopePaymentSaferpay
 			$objPayConfirmParameter
 		);
 
-		$this->getOrder()->pob_accountholder = $objPayConfirmParameter->get('POB_ACCOUNTHOLDER');
-		$this->getOrder()->pob_accountnumber = $objPayConfirmParameter->get('POB_ACCOUNTNUMBER');
-		$this->getOrder()->pob_bankcode = $objPayConfirmParameter->get('POB_BANKCODE');
-		$this->getOrder()->pob_bankname = $objPayConfirmParameter->get('POB_BANKNAME');
-		$this->getOrder()->pob_payernote = $objPayConfirmParameter->get('POB_PAYERNOTE');
-
 		$objPayCompleteParameter = new Collection;
 		$objPayCompleteParameter->addCollectionItem(new PayCompleteParameter);
 		$objPayCompleteParameter->addCollectionItem(new BillpayPayCompleteParameter);
@@ -145,6 +139,11 @@ class IsotopePaymentSaferpayBillpay extends AbstractIsotopePaymentSaferpay
 			);
 
 			$this->getOrder()->pob_duedate = $objPayCompleteResponse->get('POB_DUEDATE');
+			$this->getOrder()->pob_accountholder = $objPayCompleteResponse->get('POB_ACCOUNTHOLDER');
+			$this->getOrder()->pob_accountnumber = $objPayCompleteResponse->get('POB_ACCOUNTNUMBER');
+			$this->getOrder()->pob_bankcode = $objPayCompleteResponse->get('POB_BANKCODE');
+			$this->getOrder()->pob_bankname = $objPayCompleteResponse->get('POB_BANKNAME');
+			$this->getOrder()->pob_payernote = $objPayCompleteResponse->get('POB_PAYERNOTE');
 			$this->getOrder()->save();
 			return true;
 		} else {
