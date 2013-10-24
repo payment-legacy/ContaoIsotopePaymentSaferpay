@@ -54,6 +54,10 @@ abstract class AbstractIsotopePaymentSaferpay extends IsotopePayment
 
 			// set httpclient
 			$this->objSaferpay->setHttpClient(new BuzzClient());
+
+			// set logger
+			$this->import('IsotopePaymentLogger');
+			$this->objSaferpay->setLogger($this->IsotopePaymentLogger);
 		}
 
 		return $this->objSaferpay;
