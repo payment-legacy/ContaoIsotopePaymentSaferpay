@@ -69,3 +69,10 @@ $GLOBALS['TL_LANG']['MSC'][PayInitParameterInterface::PAYMENTMETHOD_MPASS] = 'mp
 
 $GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::PROVIDERSET_BILLPAY_LSV] = 'Billpay Lastschrift';
 $GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::PROVIDERSET_BILLPAY_INVOICE] = 'Billpay Rechnung';
+
+$GLOBALS['TL_LANG']['isoInvoice']['pob_accountholder'] = 'Kontoinhaber';
+$GLOBALS['TL_LANG']['isoInvoice']['pob_accountnumber'] = 'Kontonummer';
+$GLOBALS['TL_LANG']['isoInvoice']['pob_bankcode'] = 'BIC';
+$GLOBALS['TL_LANG']['isoInvoice']['pob_bankname'] = 'Institut';
+$GLOBALS['TL_LANG']['isoInvoice']['pob_payernote'] = 'Kennung';
+$GLOBALS['TL_LANG']['isoInvoice']['pob_duedate'] = 'Zahlbar bis';
