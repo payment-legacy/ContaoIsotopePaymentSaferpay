@@ -37,7 +37,7 @@ class IsotopePaymentSaferpay extends AbstractIsotopePaymentSaferpay
 	public function checkoutForm()
 	{
 		$objPayInitParameter = new PayInitParameter;
-        $objPayInitParameter
+		$objPayInitParameter
 			->setAmount(round($this->getCart()->grandTotal * 100, 0))
 			->setCurrency($this->getConfig()->currency)
 			->setAccountid($this->payment_saferpay_accountid)
@@ -47,17 +47,44 @@ class IsotopePaymentSaferpay extends AbstractIsotopePaymentSaferpay
 			->setFaillink($this->Environment->base . $this->addToUrl('step=failed', true))
 			->setBacklink($this->Environment->base . $this->addToUrl('step=failed', true))
 			->setPaymentmethods(unserialize($this->payment_saferpay_paymentmethods))
-			->setGender($this->getGender($this->getBillingAddress()->salutation))
-			->setFirstname($this->getBillingAddress()->firstname)
-			->setLastname($this->getBillingAddress()->lastname)
-			->setStreet($this->getBillingAddress()->street_1)
-			->setZip($this->getBillingAddress()->postal)
-			->setCity($this->getBillingAddress()->city)
-			->setCountry(strtoupper($this->getBillingAddress()->country))
-			->setLangid(strtoupper($this->getBillingAddress()->country))
-			->setPhone($this->getBillingAddress()->phone)
-			->setEmail($this->getBillingAddress()->email)
 		;
+
+		if($salutation = $this->getBillingAddress()->salutation) {
+			$objPayInitParameter->setGender($this->getGender($salutation));
+		}
+
+		if($firstname = $this->getBillingAddress()->firstname) {
+			$objPayInitParameter->setFirstname($firstname);
+		}
+
+		if($lastname = $this->getBillingAddress()->lastname) {
+			$objPayInitParameter->setLastname($lastname);
+		}
+
+		if($street = $this->getBillingAddress()->street_1) {
+			$objPayInitParameter->setStreet($street);
+		}
+
+		if($postal = $this->getBillingAddress()->postal) {
+			$objPayInitParameter->setZip($postal);
+		}
+
+		if($city = $this->getBillingAddress()->city) {
+			$objPayInitParameter->setCity($city);
+		}
+
+		if($country = $this->getBillingAddress()->country) {
+			$objPayInitParameter->setCountry(strtoupper($country));
+			$objPayInitParameter->setLangid(strtoupper($country));
+		}
+
+		if($phone = $this->getBillingAddress()->phone) {
+			$objPayInitParameter->setPhone($phone);
+		}
+
+		if($email = $this->getBillingAddress()->email) {
+			$objPayInitParameter->setEmail($email);
+		}
 
 		$strUrl = $this->getSaferpay()->createPayInit($objPayInitParameter);
 

@@ -56,31 +56,86 @@ class IsotopePaymentSaferpayBillpay extends AbstractIsotopePaymentSaferpay
 			->setFaillink($this->Environment->base . $this->addToUrl('step=failed', true))
 			->setBacklink($this->Environment->base . $this->addToUrl('step=failed', true))
 			->setProviderset(unserialize($this->payment_saferpay_providerset_billpay))
-			->setGender($this->getGender($this->getBillingAddress()->salutation))
-			->setFirstname($this->getBillingAddress()->firstname)
-			->setLastname($this->getBillingAddress()->lastname)
-			->setStreet($this->getBillingAddress()->street_1)
-			->setZip($this->getBillingAddress()->postal)
-			->setCity($this->getBillingAddress()->city)
-			->setCountry(strtoupper($this->getBillingAddress()->country))
-			->setLangid(strtoupper($this->getBillingAddress()->country))
-			->setPhone($this->getBillingAddress()->phone)
-			->setEmail($this->getBillingAddress()->email)
 		;
 
+		if($salutation = $this->getBillingAddress()->salutation) {
+			$objPayInitParameter->setGender($this->getGender($salutation));
+		}
+
+		if($firstname = $this->getBillingAddress()->firstname) {
+			$objPayInitParameter->setFirstname($firstname);
+		}
+
+		if($lastname = $this->getBillingAddress()->lastname) {
+			$objPayInitParameter->setLastname($lastname);
+		}
+
+		if($street = $this->getBillingAddress()->street_1) {
+			$objPayInitParameter->setStreet($street);
+		}
+
+		if($postal = $this->getBillingAddress()->postal) {
+			$objPayInitParameter->setZip($postal);
+		}
+
+		if($city = $this->getBillingAddress()->city) {
+			$objPayInitParameter->setCity($city);
+		}
+
+		if($country = $this->getBillingAddress()->country) {
+			$objPayInitParameter->setCountry(strtoupper($country));
+			$objPayInitParameter->setLangid(strtoupper($country));
+		}
+
+		if($phone = $this->getBillingAddress()->phone) {
+			$objPayInitParameter->setPhone($phone);
+		}
+
+		if($email = $this->getBillingAddress()->email) {
+			$objPayInitParameter->setEmail($email);
+		}
+
 		$objBillpayPayInitParameter = new BillpayPayInitParameter;
-		$objBillpayPayInitParameter
-			->setAddressAddition(!is_null($this->getBillingAddress()->street_2) ? $this->getBillingAddress()->street_2 : '')
-			->setDeliveryGender($this->getGender($this->getShippingAdress()->salutation))
-			->setDeliveryFirstname($this->getShippingAdress()->firstname)
-			->setDeliveryLastname($this->getShippingAdress()->lastname)
-			->setDeliveryStreet($this->getShippingAdress()->street_1)
-			->setDeliveryAddressAddition(!is_null($this->getShippingAdress()->street_2) ? $this->getShippingAdress()->street_2 : '')
-			->setDeliveryZip($this->getShippingAdress()->postal)
-			->setDeliveryCity($this->getShippingAdress()->city)
-			->setDeliveryCountry(strtoupper($this->getShippingAdress()->country))
-			->setDeliveryPhone($this->getShippingAdress()->phone)
-		;
+
+		if($addressAddition = $this->getBillingAddress()->street_2) {
+			$objBillpayPayInitParameter->setAddressAddition($addressAddition);
+		}
+
+		if($deliverySalutation = $this->getShippingAdress()->salutation) {
+			$objBillpayPayInitParameter->setDeliveryGender($this->getGender($deliverySalutation));
+		}
+
+		if($deliveryFirstname = $this->getShippingAdress()->firstname) {
+			$objBillpayPayInitParameter->setDeliveryFirstname($deliveryFirstname);
+		}
+
+		if($deliveryLastname = $this->getShippingAdress()->lastname) {
+			$objBillpayPayInitParameter->setDeliveryLastname($deliveryLastname);
+		}
+
+		if($deliveryStreet = $this->getShippingAdress()->street_1) {
+			$objBillpayPayInitParameter->setDeliveryStreet($deliveryStreet);
+		}
+
+		if($deliveryAddressAddition = $this->getShippingAdress()->street_2) {
+			$objBillpayPayInitParameter->setDeliveryAddressAddition($deliveryAddressAddition);
+		}
+
+		if($deliveryZip = $this->getShippingAdress()->postal) {
+			$objBillpayPayInitParameter->setDeliveryZip($deliveryZip);
+		}
+
+		if($deliveryCity = $this->getShippingAdress()->city) {
+			$objBillpayPayInitParameter->setDeliveryCity($deliveryCity);
+		}
+
+		if($deliveryCountry = $this->getShippingAdress()->country) {
+			$objBillpayPayInitParameter->setDeliveryCountry(strtoupper($deliveryCountry));
+		}
+
+		if($deliveryPhone = $this->getShippingAdress()->phone) {
+			$objBillpayPayInitParameter->setDeliveryPhone($deliveryPhone);
+		}
 
 		if($this->getGender($this->getBillingAddress()->salutation) == 'c')
 		{
