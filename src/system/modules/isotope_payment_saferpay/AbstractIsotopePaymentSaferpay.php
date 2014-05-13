@@ -58,12 +58,22 @@ abstract class AbstractIsotopePaymentSaferpay extends IsotopePayment
 			// initialize saferpay
 			$this->objSaferpay = new Saferpay();
 
-			if($this->payment_saferpay_httpclient == AbstractIsotopePaymentSaferpay::CLIENT_CURL) {
+			if($this->payment_saferpay_httpclient == AbstractIsotopePaymentSaferpay::CLIENT_CURL)
+			{
 				$client = new Curl();
-			} elseif($this->payment_saferpay_httpclient == AbstractIsotopePaymentSaferpay::CLIENT_FOPEN) {
+			}
+			elseif($this->payment_saferpay_httpclient == AbstractIsotopePaymentSaferpay::CLIENT_FOPEN)
+			{
 				$client = new FileGetContents();
-			} else {
+			}
+			else
+			{
 				throw new \Exception("No client selected in configuration");
+			}
+
+			if($this->payment_saferpay_disable_ssl_verification)
+			{
+				$client->setVerifyPeer(false);
 			}
 
 			$browser = new Browser($client);

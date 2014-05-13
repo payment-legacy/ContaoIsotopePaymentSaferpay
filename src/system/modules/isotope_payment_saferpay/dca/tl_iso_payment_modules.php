@@ -52,6 +52,13 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_httpcli
 	'eval'			=> array('mandatory'=>true, 'tl_class'=>'w50')
 );
 
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_disable_ssl_verification'] = array
+(
+	'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_disable_ssl_verification'],
+	'inputType'		=> 'checkbox',
+	'eval'			=> array('tl_class'=>'w50')
+);
+
 $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_accountid'] = array
 (
 	'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_accountid'],
