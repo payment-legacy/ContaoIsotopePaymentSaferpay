@@ -31,7 +31,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_httpclient']				= array('Saferpay Http Client', 'Bitte wählen Sie hier, welche Technik sie verwenden möchten.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_disable_ssl_verification']	= array('Saferpay SSL Prüfung', 'Dekativiert die SSL Prüfung');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_disable_ssl_verification']	= array('Saferpay SSL Prüfung Deaktivieren (falls es nicht funktioniert)', 'Deaktiviert die SSL Prüfung');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_accountid']					= array('Saferpay Account-ID', 'Bitte geben Sie Ihre eindeutige Saferpay Account-ID ein.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_password']					= array('Saferpay Password', 'Bitte geben Sie Ihr Saferpay Passwort ein. Ohne ist es nicht möglich fehlgeschlagene Zahlungen, korrekt abzubrechen.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_description']				= array('Saferpay Bestell-Beschreibung', 'Diese Beschreibung wird dem Kunden im Saferpay-Bestellprozess angezeigt.');
