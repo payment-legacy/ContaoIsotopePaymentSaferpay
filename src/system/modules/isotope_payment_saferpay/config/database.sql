@@ -13,7 +13,7 @@
 
 CREATE TABLE `tl_iso_payment_modules` (
   `payment_saferpay_httpclient` varchar(16) NOT NULL default '',
-  `payment_saferpay_disable_ssl_verification` char(1) NOT NULL default,
+  `payment_saferpay_disable_ssl_verification` char(1) NOT NULL default '',
   `payment_saferpay_accountid` varchar(16) NOT NULL default '',
   `payment_saferpay_password` varchar(16) NOT NULL default '',
   `payment_saferpay_description` varchar(255) NOT NULL default '',
