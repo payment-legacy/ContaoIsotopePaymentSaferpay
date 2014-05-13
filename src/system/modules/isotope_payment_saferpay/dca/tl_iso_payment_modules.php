@@ -33,8 +33,8 @@ use Payment\Saferpay\Data\Billpay\BillpayPayInitParameterInterface;
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['payment_saferpay'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payment_saferpay_httpclient,payment_saferpay_accountid,payment_saferpay_password,payment_saferpay_description,payment_saferpay_paymentmethods;{price_legend:hide},price,tax_class;{enabled_legend},enabled';
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['payment_saferpay_billpay'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payment_saferpay_httpclient,payment_saferpay_accountid,payment_saferpay_password,payment_saferpay_description,payment_saferpay_providerset_billpay;{price_legend:hide},price,tax_class;{enabled_legend},enabled';
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['payment_saferpay'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payment_saferpay_httpclient,payment_saferpay_disable_ssl_verification,payment_saferpay_accountid,payment_saferpay_password,payment_saferpay_description,payment_saferpay_paymentmethods;{price_legend:hide},price,tax_class;{enabled_legend},enabled';
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['payment_saferpay_billpay'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payment_saferpay_httpclient,payment_saferpay_disable_ssl_verification,payment_saferpay_accountid,payment_saferpay_password,payment_saferpay_description,payment_saferpay_providerset_billpay;{price_legend:hide},price,tax_class;{enabled_legend},enabled';
 
 /**
  * Fields
