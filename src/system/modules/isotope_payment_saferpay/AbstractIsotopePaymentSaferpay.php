@@ -27,6 +27,9 @@
  * @license	LGPLv3
  */
 
+use Buzz\Browser;
+use Buzz\Client\Curl;
+use Buzz\Client\FileGetContents;
 use Payment\HttpClient\BuzzClient;
 use Payment\Saferpay\Saferpay;
 
@@ -42,6 +45,9 @@ abstract class AbstractIsotopePaymentSaferpay extends IsotopePayment
 	 */
 	protected $objOrder;
 
+    const CLIENT_CURL = 'curl';
+    const CLIENT_FOPEN = 'fopen';
+
 	/**
 	 * @return Saferpay
 	 */
@@ -52,8 +58,21 @@ abstract class AbstractIsotopePaymentSaferpay extends IsotopePayment
 			// initialize saferpay
 			$this->objSaferpay = new Saferpay();
 
+			if($this->payment_saferpay_httpclient == AbstractIsotopePaymentSaferpay::CLIENT_CURL) {
+				$client = new Curl();
+			} elseif($this->payment_saferpay_httpclient == AbstractIsotopePaymentSaferpay::CLIENT_FOPEN) {
+				$client = new FileGetContents();
+			} else {
+				throw new \Exception("No client selected in configuration");
+			}
+
+			$browser = new Browser($client);
+
+			$buzzClient = new BuzzClient();
+			$buzzClient->setClient($browser);
+
 			// set httpclient
-			$this->objSaferpay->setHttpClient(new BuzzClient());
+			$this->objSaferpay->setHttpClient($buzzClient);
 
 			// set logger
 			$this->import('IsotopePaymentLogger');
