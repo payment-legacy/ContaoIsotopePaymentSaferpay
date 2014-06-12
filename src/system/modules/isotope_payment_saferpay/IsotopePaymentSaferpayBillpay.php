@@ -208,6 +208,7 @@ class IsotopePaymentSaferpayBillpay extends AbstractIsotopePaymentSaferpay
 			$this->getOrder()->pob_bankname = $objPayCompleteResponseCollection->get('POB_BANKNAME');
 			$this->getOrder()->pob_payernote = $objPayCompleteResponseCollection->get('POB_PAYERNOTE');
 			$this->getOrder()->save();
+			$this->getOrder()->updateOrderStatus($this->new_order_status);
 			return true;
 		} else {
 			$this->getSaferpay()->payCompleteV2(

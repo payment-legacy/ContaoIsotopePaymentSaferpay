@@ -108,6 +108,7 @@ class IsotopePaymentSaferpay extends AbstractIsotopePaymentSaferpay
 			$this->getSaferpay()->payCompleteV2($payConfirmParameter, 'Settlement', $this->payment_saferpay_password);
 			$this->getOrder()->date_paid = time();
 			$this->getOrder()->save();
+			$this->getOrder()->updateOrderStatus($this->new_order_status);
 			return true;
 		} else {
 			$this->getSaferpay()->payCompleteV2($payConfirmParameter, 'Cancel', $this->payment_saferpay_password);
