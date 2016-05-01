@@ -70,7 +70,6 @@
                 echo $this->config['street_3'] ? $this->config['street_3'] . "<br>" : "";
                 echo $this->config['postal'] . " " . $this->config['city'] . "<br>";
                 echo $GLOBALS['TL_LANG']['CNT'][$this->config['country']] . "<br><br>";
-                echo $GLOBALS['TL_LANG']['tl_iso_config']['phone'][0] . ": " . $this->config['phone'] . "<br>";
                 echo $this->config['email'] . "<br>";
                 echo $_SERVER["SERVER_NAME"] . "<br><br>";
                 if(strlen($this->config['bank_name']) > 0):
@@ -256,7 +255,7 @@
 <br><br><br>
 <table width="100%" cellspacing="0" cellpadding="0">
     <tr>
-        <td><?php echo $GLOBALS['TL_LANG']['isoInvoice']['pob_paymentnote']; ?><strong><?php echo $GLOBALS['TL_LANG']['isoInvoice']['pob_accountnumber']; ?></strong></td>
+        <td><?php echo $GLOBALS['TL_LANG']['isoInvoice']['pob_paymentnote']; ?> <strong><?php echo $this->pob_accountnumber; ?></strong></td>
     </tr>
 </table>
 <?php endif; ?>
