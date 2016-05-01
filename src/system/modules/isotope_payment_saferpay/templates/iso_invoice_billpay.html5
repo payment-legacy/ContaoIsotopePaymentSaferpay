@@ -49,7 +49,7 @@
                 echo $this->orderDateLabel . ": " . $this->orderDate . "<br>";
                 echo $this->orderIdLabel . ": " . $this->orderId . "<br>";
                 echo $GLOBALS['TL_LANG']['isoInvoice']['date'] . ": " . $this->orderDate . "<br>";
-                if($this->pob_duedate)
+                if($this->pob_accountnumber)
                 {
                 echo "<br>";
                 echo $GLOBALS['TL_LANG']['isoInvoice']['pob_accountholder'] . ": " . $this->pob_accountholder . "<br>";
@@ -57,7 +57,7 @@
                 echo $GLOBALS['TL_LANG']['isoInvoice']['pob_bankcode'] . ": " . $this->pob_bankcode . "<br>";
                 echo $GLOBALS['TL_LANG']['isoInvoice']['pob_bankname'] . ": " . $this->pob_bankname . "<br>";
                 echo $GLOBALS['TL_LANG']['isoInvoice']['pob_payernote'] . ": " . $this->pob_payernote . "<br>";
-                echo $GLOBALS['TL_LANG']['isoInvoice']['pob_duedate'] . ": " . $this->pob_duedate . "<br>";
+                echo $GLOBALS['TL_LANG']['isoInvoice']['pob_duedate'] . ": " . $this->pob_duedate->format('d.m.Y') . "<br>";
                 }
                 ?></td>
         <td width="40%"><strong><?php
@@ -251,4 +251,12 @@
     </tr>
     <?php endif; ?>
 </table>
+<?php if($this->pob_accountnumber): ?>
+<br><br><br>
+<table width="100%" cellspacing="0" cellpadding="0">
+    <tr>
+        <td><?php echo $GLOBALS['TL_LANG']['isoInvoice']['pob_paymentnote']; ?><strong><?php echo $GLOBALS['TL_LANG']['isoInvoice']['pob_accountnumber']; ?></strong></td>
+    </tr>
+</table>
+<?php endif; ?>
 </div>

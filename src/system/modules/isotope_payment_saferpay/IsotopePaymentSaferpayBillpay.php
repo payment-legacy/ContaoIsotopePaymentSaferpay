@@ -201,7 +201,7 @@ class IsotopePaymentSaferpayBillpay extends AbstractIsotopePaymentSaferpay
 				$objPayCompleteResponseCollection
 			);
 
-			$this->getOrder()->pob_duedate = $objPayCompleteResponseCollection->get('POB_DUEDATE');
+			$this->getOrder()->pob_duedate = new \DateTime($objPayCompleteResponseCollection->get('POB_DUEDATE'));
 			$this->getOrder()->pob_accountholder = $objPayCompleteResponseCollection->get('POB_ACCOUNTHOLDER');
 			$this->getOrder()->pob_accountnumber = $objPayCompleteResponseCollection->get('POB_ACCOUNTNUMBER');
 			$this->getOrder()->pob_bankcode = $objPayCompleteResponseCollection->get('POB_BANKCODE');

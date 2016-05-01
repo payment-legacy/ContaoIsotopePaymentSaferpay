@@ -10,12 +10,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -71,8 +71,9 @@ $GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::PROVIDERSET_BILLPAY
 $GLOBALS['TL_LANG']['MSC'][BillpayPayInitParameterInterface::PROVIDERSET_BILLPAY_INVOICE] = 'Billpay Rechnung';
 
 $GLOBALS['TL_LANG']['isoInvoice']['pob_accountholder'] = 'Kontoinhaber';
-$GLOBALS['TL_LANG']['isoInvoice']['pob_accountnumber'] = 'Kontonummer';
+$GLOBALS['TL_LANG']['isoInvoice']['pob_accountnumber'] = 'IBAN';
 $GLOBALS['TL_LANG']['isoInvoice']['pob_bankcode'] = 'BIC';
 $GLOBALS['TL_LANG']['isoInvoice']['pob_bankname'] = 'Institut';
 $GLOBALS['TL_LANG']['isoInvoice']['pob_payernote'] = 'Kennung';
 $GLOBALS['TL_LANG']['isoInvoice']['pob_duedate'] = 'Zahlbar bis';
+$GLOBALS['TL_LANG']['isoInvoice']['pob_paymentnote'] = 'Bitte überweisen Sie den Gesamtbetrag innerhalb der Zahlungsfrist auf das folgende Konto:';
