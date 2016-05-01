@@ -51,13 +51,14 @@
                 echo $GLOBALS['TL_LANG']['isoInvoice']['date'] . ": " . $this->orderDate . "<br>";
                 if($this->pob_accountnumber)
                 {
+                $dueDate = new \DateTime($this->pob_duedate);
                 echo "<br>";
                 echo $GLOBALS['TL_LANG']['isoInvoice']['pob_accountholder'] . ": " . $this->pob_accountholder . "<br>";
                 echo $GLOBALS['TL_LANG']['isoInvoice']['pob_accountnumber'] . ": " . $this->pob_accountnumber . "<br>";
                 echo $GLOBALS['TL_LANG']['isoInvoice']['pob_bankcode'] . ": " . $this->pob_bankcode . "<br>";
                 echo $GLOBALS['TL_LANG']['isoInvoice']['pob_bankname'] . ": " . $this->pob_bankname . "<br>";
                 echo $GLOBALS['TL_LANG']['isoInvoice']['pob_payernote'] . ": " . $this->pob_payernote . "<br>";
-                echo $GLOBALS['TL_LANG']['isoInvoice']['pob_duedate'] . ": " . $this->pob_duedate->format('d.m.Y') . "<br>";
+                echo $GLOBALS['TL_LANG']['isoInvoice']['pob_duedate'] . ": " . $dueDate->format('d.m.Y') . "<br>";
                 }
                 ?></td>
         <td width="40%"><strong><?php
