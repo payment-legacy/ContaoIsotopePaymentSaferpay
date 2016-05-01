@@ -74,6 +74,6 @@ $GLOBALS['TL_LANG']['isoInvoice']['pob_accountholder'] = 'Kontoinhaber';
 $GLOBALS['TL_LANG']['isoInvoice']['pob_accountnumber'] = 'IBAN';
 $GLOBALS['TL_LANG']['isoInvoice']['pob_bankcode'] = 'BIC';
 $GLOBALS['TL_LANG']['isoInvoice']['pob_bankname'] = 'Institut';
-$GLOBALS['TL_LANG']['isoInvoice']['pob_payernote'] = 'Kennung';
+$GLOBALS['TL_LANG']['isoInvoice']['pob_payernote'] = 'Verwendungszweck';
 $GLOBALS['TL_LANG']['isoInvoice']['pob_duedate'] = 'Zahlbar bis';
 $GLOBALS['TL_LANG']['isoInvoice']['pob_paymentnote'] = 'Bitte überweisen Sie den Gesamtbetrag innerhalb der Zahlungsfrist auf das folgende Konto:';
