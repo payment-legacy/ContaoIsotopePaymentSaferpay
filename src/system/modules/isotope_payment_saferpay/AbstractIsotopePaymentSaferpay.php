@@ -76,6 +76,8 @@ abstract class AbstractIsotopePaymentSaferpay extends IsotopePayment
 				$client->setVerifyPeer(false);
 			}
 
+			$client->setTimeout($this->payment_saferpay_timeout);
+
 			$browser = new Browser($client);
 
 			$buzzClient = new BuzzClient();

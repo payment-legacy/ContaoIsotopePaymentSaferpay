@@ -10,12 +10,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -33,8 +33,8 @@ use Payment\Saferpay\Data\Billpay\BillpayPayInitParameterInterface;
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['payment_saferpay'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payment_saferpay_httpclient,payment_saferpay_disable_ssl_verification,payment_saferpay_accountid,payment_saferpay_password,payment_saferpay_description,payment_saferpay_paymentmethods;{price_legend:hide},price,tax_class;{enabled_legend},enabled';
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['payment_saferpay_billpay'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payment_saferpay_httpclient,payment_saferpay_disable_ssl_verification,payment_saferpay_accountid,payment_saferpay_password,payment_saferpay_description,payment_saferpay_providerset_billpay;{price_legend:hide},price,tax_class;{enabled_legend},enabled';
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['payment_saferpay'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payment_saferpay_httpclient,payment_saferpay_disable_ssl_verification,payment_saferpay_timeout,payment_saferpay_accountid,payment_saferpay_password,payment_saferpay_description,payment_saferpay_paymentmethods;{price_legend:hide},price,tax_class;{enabled_legend},enabled';
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['payment_saferpay_billpay'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payment_saferpay_httpclient,payment_saferpay_disable_ssl_verification,payment_saferpay_timeout,payment_saferpay_accountid,payment_saferpay_password,payment_saferpay_description,payment_saferpay_providerset_billpay;{price_legend:hide},price,tax_class;{enabled_legend},enabled';
 
 /**
  * Fields
@@ -57,6 +57,13 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_disable
 	'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_disable_ssl_verification'],
 	'inputType'		=> 'checkbox',
 	'eval'			=> array('tl_class'=>'w50')
+);
+
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_timeout'] = array
+(
+	'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payment_saferpay_timeout'],
+	'inputType'		=> 'text',
+	'eval'			=> array('tl_class'=>'w50', 'rgxp'=>'digit')
 );
 
 $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['payment_saferpay_accountid'] = array
