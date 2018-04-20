@@ -17,6 +17,7 @@
         "payment/saferpay": "~3.0",
         "payment/httpclient-buzz": "1.1.*"
     },
+    "abandoned": true,
     "extra": {
         "contao": {
             "symlinks": {
